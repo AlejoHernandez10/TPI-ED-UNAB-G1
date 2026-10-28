@@ -53,7 +53,7 @@ def main():
             InterfazConsola.mostrar_lista_juegos(f"Videojuegos en '{genero_sel}'", resultados)
             InterfazConsola.pausar()
 
-        # 4. VER JUEGOS RELACIONADOS
+        # 4. VER JUEGOS RELACIONADOS (Grafo de conexiones)
         elif opcion == "4":
             query = InterfazConsola.pedir_texto("Ingrese el título del juego base")
             coincidencias = catalogo.buscar_por_titulo(query)
@@ -77,7 +77,7 @@ def main():
                 InterfazConsola.mostrar_mensaje("[!] No se encontró el juego especificado.")
             InterfazConsola.pausar()
 
-        # 6. VER TOP 10
+        # 6. VER TOP 10 (Max-Heap)
         elif opcion == "6":
             top_10 = catalogo.obtener_top_n(10)
             InterfazConsola.mostrar_top_10(top_10)

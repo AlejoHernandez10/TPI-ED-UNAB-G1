@@ -4,6 +4,9 @@ import os
 # Ajuste de ruta para permitir importaciones desde la raíz
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 from estructuras.arbol_binario import ArbolBinarioBusqueda
 from modelos.juego import Juego
 
