@@ -37,7 +37,7 @@ Los documentos formales requeridos por la catedra se encuentran en la carpeta `d
 * [06-analisis-complejidad.md](docs/06-analisis-complejidad.md) — Analisis teorico y mediciones reales de complejidad temporal (TP 2).
 * [justificacion-recorridos.md](docs/justificacion-recorridos.md) — Analisis de BFS y DFS y por que se implementan como metodos genericos.
 * [justificacion-dijkstra.md](docs/justificacion-dijkstra.md) — Explicacion de Dijkstra, definicion de costo y justificacion teorica.
-* [guion-demostracion.md](docs/guion-demostracion.md) — Guion paso a paso de 3 minutos para la defensa oral (TP 10).
+
 
 ---
 
