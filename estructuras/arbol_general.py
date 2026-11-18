@@ -1,50 +1,44 @@
+# estructuras/arbol_general.py
 from collections import deque
-from typing import Optional, List, Any
-
 
 class NodoGeneral:
-    """Nodo para un Árbol General (puede tener cualquier cantidad de hijos)."""
+    def __init__(self, clave, valor=None):
+        self.clave = clave.strip()
+        self.valor = valor
+        self.hijos = []
 
-    def __init__(self, clave: str, valor: Any = None):
-        self.clave: str = clave.strip()
-        self.valor: Any = valor
-        self.hijos: List['NodoGeneral'] = []
-
-    def agregar_hijo(self, nodo_hijo: 'NodoGeneral') -> None:
-        """Agrega un nodo a la lista de hijos."""
+    def agregar_hijo(self, nodo_hijo):
+        # agrega un nodo a la lista de hijos
         self.hijos.append(nodo_hijo)
 
-    def es_hoja(self) -> bool:
-        """Indica si el nodo es hoja (no tiene hijos)."""
+    def es_hoja(self):
+        # revisa si el nodo no tiene hijos
         return len(self.hijos) == 0
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return f"NodoGeneral(clave='{self.clave}', valor={self.valor}, hijos={len(self.hijos)})"
 
-    def __str__(self) -> str:
+    def __str__(self):
         if self.valor is not None:
             return f"{self.clave} ({self.valor})"
         return self.clave
 
 
 class ArbolGeneral:
-    """Árbol General (N-ario) para modelar la jerarquía de categorías y juegos."""
-
     def __init__(self):
-        self.raiz: Optional[NodoGeneral] = None
+        self.raiz = None
 
-    def es_vacio(self) -> bool:
-        """Indica si el árbol está vacío."""
+    def es_vacio(self):
+        # devuelve true si el arbol no tiene raiz
         return self.raiz is None
 
-    # --- INSERCIÓN Y ESTRUCTURA ---
-    def establecer_raiz(self, clave: str, valor: Any = None) -> NodoGeneral:
-        """Crea y asigna el nodo raíz del árbol."""
+    def establecer_raiz(self, clave, valor=None):
+        # crea y asigna la raiz del arbol
         self.raiz = NodoGeneral(clave=clave, valor=valor)
         return self.raiz
 
-    def agregar_hijo(self, clave_padre: str, clave_hijo: str, valor_hijo: Any = None) -> bool:
-        """Busca el nodo padre y le agrega un nuevo hijo. Retorna True si lo encontró."""
+    def agregar_hijo(self, clave_padre, clave_hijo, valor_hijo=None):
+        # busca al padre y le agrega un nuevo hijo
         padre = self.buscar(clave_padre)
         if padre is None:
             return False
@@ -53,16 +47,15 @@ class ArbolGeneral:
         padre.agregar_hijo(nuevo_hijo)
         return True
 
-    # --- BÚSQUEDA ---
-    def buscar(self, clave: str) -> Optional[NodoGeneral]:
-        """Busca un nodo por su clave usando DFS recursivo. Retorna el nodo o None."""
+    def buscar(self, clave):
+        # busca un nodo por clave usando dfs recursivo
         if self.raiz is None:
             return None
 
         clave_normalizada = clave.strip().lower()
         return self._buscar_recursivo(self.raiz, clave_normalizada)
 
-    def _buscar_recursivo(self, nodo: NodoGeneral, clave_buscada: str) -> Optional[NodoGeneral]:
+    def _buscar_recursivo(self, nodo, clave_buscada):
         if nodo.clave.strip().lower() == clave_buscada:
             return nodo
 
@@ -73,14 +66,13 @@ class ArbolGeneral:
 
         return None
 
-    # --- RECORRIDOS ---
-    def recorrido_amplitud(self) -> List[NodoGeneral]:
-        """Recorrido por niveles (BFS) usando una cola FIFO."""
+    def recorrido_amplitud(self):
+        # recorrido por niveles usando una cola
         if self.raiz is None:
             return []
 
-        resultado: List[NodoGeneral] = []
-        cola: deque[NodoGeneral] = deque([self.raiz])
+        resultado = []
+        cola = deque([self.raiz])
 
         while cola:
             nodo_actual = cola.popleft()
@@ -90,60 +82,59 @@ class ArbolGeneral:
 
         return resultado
 
-    def recorrido_profundidad(self) -> List[NodoGeneral]:
-        """Recorrido en profundidad (DFS) en preorden."""
+    def recorrido_profundidad(self):
+        # recorrido en profundidad (dfs)
         if self.raiz is None:
             return []
 
-        resultado: List[NodoGeneral] = []
+        resultado = []
         self._dfs_recursivo(self.raiz, resultado)
         return resultado
 
-    def _dfs_recursivo(self, nodo: NodoGeneral, lista: List[NodoGeneral]) -> None:
+    def _dfs_recursivo(self, nodo, lista):
         lista.append(nodo)
         for hijo in nodo.hijos:
             self._dfs_recursivo(hijo, lista)
 
-    # --- MÉTODOS ÚTILES ---
-    def altura(self) -> int:
-        """Calcula la altura del árbol (0 si está vacío, 1 si solo tiene la raíz)."""
+    def altura(self):
+        # calcula la altura del arbol
         if self.raiz is None:
             return 0
         return self._altura_recursiva(self.raiz)
 
-    def _altura_recursiva(self, nodo: NodoGeneral) -> int:
+    def _altura_recursiva(self, nodo):
         if not nodo.hijos:
             return 1
         return 1 + max(self._altura_recursiva(hijo) for hijo in nodo.hijos)
 
-    def cantidad_nodos(self) -> int:
-        """Devuelve la cantidad total de nodos del árbol."""
+    def cantidad_nodos(self):
+        # devuelve la cantidad total de nodos
         return len(self.recorrido_amplitud())
 
-    def obtener_hojas(self) -> List[NodoGeneral]:
-        """Devuelve todos los nodos hoja (los que no tienen hijos)."""
+    def obtener_hojas(self):
+        # devuelve todos los nodos hoja
         return [nodo for nodo in self.recorrido_profundidad() if nodo.es_hoja()]
 
-    def obtener_hijos(self, clave: str) -> List[NodoGeneral]:
-        """Devuelve la lista de hijos directos del nodo indicado."""
+    def obtener_hijos(self, clave):
+        # devuelve la lista de hijos directos del nodo
         nodo = self.buscar(clave)
         if nodo is None:
             return []
         return list(nodo.hijos)
 
-    def obtener_camino(self, clave: str) -> Optional[List[str]]:
-        """Obtiene la ruta de nombres desde la raíz hasta el nodo buscado."""
+    def obtener_camino(self, clave):
+        # obtiene el camino desde la raiz hasta el nodo buscado
         if self.raiz is None:
             return None
 
         clave_normalizada = clave.strip().lower()
-        camino_actual: List[str] = []
+        camino_actual = []
 
         if self._construir_camino(self.raiz, clave_normalizada, camino_actual):
             return camino_actual
         return None
 
-    def _construir_camino(self, nodo: NodoGeneral, clave_buscada: str, camino: List[str]) -> bool:
+    def _construir_camino(self, nodo, clave_buscada, camino):
         camino.append(nodo.clave)
 
         if nodo.clave.strip().lower() == clave_buscada:
@@ -156,32 +147,31 @@ class ArbolGeneral:
         camino.pop()
         return False
 
-    # --- VISUALIZACIÓN ---
-    def mostrar_arbol(self, usar_unicode: bool = False) -> str:
-        """Genera el árbol en formato texto con ramas e indentación."""
+    def mostrar_arbol(self, usar_unicode=False):
+        # arma el arbol en formato texto con ramas
         if self.raiz is None:
-            return "Árbol vacío"
+            return "Arbol vacio"
 
-        lineas: List[str] = []
+        lineas = []
 
         c_intermedio = "├── " if usar_unicode else "|-- "
         c_final = "└── " if usar_unicode else "\\-- "
         e_vertical = "│   " if usar_unicode else "|   "
         e_vacio = "    "
 
-        def _formatear_nodo(nodo: NodoGeneral) -> str:
+        def _formatear_nodo(nodo):
             if nodo.valor is None:
                 return nodo.clave
 
-            # Si el nodo guarda un juego, mostramos año y calificación
+            # si guarda un juego mostramos anio y calificacion
             if hasattr(nodo.valor, 'anio_publicacion') and hasattr(nodo.valor, 'calificacion'):
                 return f"{nodo.clave} ({nodo.valor.anio_publicacion}) [Rating: {nodo.valor.calificacion}]"
 
-            # Si es otro dato, lo mostramos como texto
+            # si es otro dato lo mostramos como texto
             valor_str = str(nodo.valor).replace("⭐", "Rating:")
             return f"{nodo.clave} ({valor_str})"
 
-        def _recorrer(nodo: NodoGeneral, prefijo: str = "", es_ultimo: bool = True, es_raiz: bool = True) -> None:
+        def _recorrer(nodo, prefijo="", es_ultimo=True, es_raiz=True):
             if es_raiz:
                 lineas.append(_formatear_nodo(nodo))
                 nuevo_prefijo = ""
@@ -198,8 +188,8 @@ class ArbolGeneral:
         _recorrer(self.raiz)
         return "\n".join(lineas)
 
-    def __len__(self) -> int:
+    def __len__(self):
         return self.cantidad_nodos()
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return f"ArbolGeneral(raiz={repr(self.raiz)}, total_nodos={self.cantidad_nodos()})"

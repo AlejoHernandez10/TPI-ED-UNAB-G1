@@ -29,6 +29,8 @@ Los documentos formales requeridos por la catedra se encuentran en la carpeta `d
 
 *  [01-requerimientos.md](docs/01-requerimientos.md) — Requerimientos funcionales, no funcionales y alcance.
 *  [02-casos-de-uso.md](docs/02-casos-de-uso.md) — Descripcion de los 5 casos de uso principales.
+*  [03-diagrama-clases.md](docs/03-diagrama-clases.md) — Diagrama de clases UML del sistema y estructuras.
+*  [04-diagrama-datos.md](docs/04-diagrama-datos.md) — Diagrama de flujo de datos y conexion de estructuras.
 *  [05-gestion-proyecto.md](docs/05-gestion-proyecto.md) — Metodologia de trabajo, equipo y tablero de tareas.
 
 ---

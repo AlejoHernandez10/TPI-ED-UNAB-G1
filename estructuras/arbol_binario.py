@@ -1,23 +1,23 @@
-from typing import Optional, List, Any
+# estructuras/arbol_binario.py
 
 class NodoArbol:
-    def __init__(self, clave: str, valor: Any):
-        self.clave: str = clave.strip().lower()
-        self.valor: Any = valor
-        self.izquierdo: Optional['NodoArbol'] = None
-        self.derecho: Optional['NodoArbol'] = None
+    def __init__(self, clave, valor):
+        self.clave = clave.strip().lower()
+        self.valor = valor
+        self.izquierdo = None
+        self.derecho = None
 
 
 class ArbolBinarioBusqueda:
     def __init__(self):
-        self.raiz: Optional[NodoArbol] = None
+        self.raiz = None
 
-    # --- INSERCIÓN ---
-    def insertar(self, clave: str, valor: Any) -> None:
-        """Inserta un nodo en el BST utilizando la clave en minúsculas."""
+    def insertar(self, clave, valor):
+        # insertamos pasando la clave en minusculas
         self.raiz = self._insertar_recursivo(self.raiz, clave.strip().lower(), valor)
 
-    def _insertar_recursivo(self, nodo: Optional[NodoArbol], clave: str, valor: Any) -> NodoArbol:
+    def _insertar_recursivo(self, nodo, clave, valor):
+        # si llegamos a un nodo vacio creamos el nuevo nodo aca
         if nodo is None:
             return NodoArbol(clave, valor)
 
@@ -26,16 +26,16 @@ class ArbolBinarioBusqueda:
         elif clave > nodo.clave:
             nodo.derecho = self._insertar_recursivo(nodo.derecho, clave, valor)
         else:
-            nodo.valor = valor  # Actualiza si la clave ya existe
+            # si la clave ya existe actualizamos el valor
+            nodo.valor = valor
 
         return nodo
 
-    # --- BÚSQUEDA ---
-    def buscar(self, clave: str) -> Optional[Any]:
-        """Busca un elemento en el BST dada su clave exacta."""
+    def buscar(self, clave):
+        # busca un elemento por su clave exacta
         return self._buscar_recursivo(self.raiz, clave.strip().lower())
 
-    def _buscar_recursivo(self, nodo: Optional[NodoArbol], clave: str) -> Optional[Any]:
+    def _buscar_recursivo(self, nodo, clave):
         if nodo is None:
             return None
 
@@ -46,38 +46,37 @@ class ArbolBinarioBusqueda:
         else:
             return self._buscar_recursivo(nodo.derecho, clave)
 
-    # --- RECORRIDOS ---
-    def inorder(self) -> List[Any]:
-        """Recorrido Inorden (Izquierda, Raíz, Derecha). Devuelve la lista ordenada por clave."""
+    def inorder(self):
+        # recorrido inorden: izquierda, raiz, derecha
         resultados = []
         self._inorder_recursivo(self.raiz, resultados)
         return resultados
 
-    def _inorder_recursivo(self, nodo: Optional[NodoArbol], lista: List[Any]) -> None:
+    def _inorder_recursivo(self, nodo, lista):
         if nodo:
             self._inorder_recursivo(nodo.izquierdo, lista)
             lista.append(nodo.valor)
             self._inorder_recursivo(nodo.derecho, lista)
 
-    def preorder(self) -> List[Any]:
-        """Recorrido Preorden (Raíz, Izquierda, Derecha)."""
+    def preorder(self):
+        # recorrido preorden: raiz, izquierda, derecha
         resultados = []
         self._preorder_recursivo(self.raiz, resultados)
         return resultados
 
-    def _preorder_recursivo(self, nodo: Optional[NodoArbol], lista: List[Any]) -> None:
+    def _preorder_recursivo(self, nodo, lista):
         if nodo:
             lista.append(nodo.valor)
             self._preorder_recursivo(nodo.izquierdo, lista)
             self._preorder_recursivo(nodo.derecho, lista)
 
-    def postorder(self) -> List[Any]:
-        """Recorrido Postorden (Izquierda, Derecha, Raíz)."""
+    def postorder(self):
+        # recorrido postorden: izquierda, derecha, raiz
         resultados = []
         self._postorder_recursivo(self.raiz, resultados)
         return resultados
 
-    def _postorder_recursivo(self, nodo: Optional[NodoArbol], lista: List[Any]) -> None:
+    def _postorder_recursivo(self, nodo, lista):
         if nodo:
             self._postorder_recursivo(nodo.izquierdo, lista)
             self._postorder_recursivo(nodo.derecho, lista)

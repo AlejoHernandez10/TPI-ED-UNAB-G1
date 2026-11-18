@@ -1,128 +1,93 @@
-from typing import Optional, List, Any
-
+# estructuras/avl.py
 
 class NodoAVL:
-    """Nodo para la estructura de Árbol AVL."""
+    def __init__(self, clave, valor):
+        self.clave = clave.strip().lower()
+        self.valor = valor
+        self.altura = 1
+        self.izquierdo = None
+        self.derecho = None
 
-    def __init__(self, clave: str, valor: Any):
-        self.clave: str = clave.strip().lower()
-        self.valor: Any = valor
-        self.altura: int = 1
-        self.izquierdo: Optional['NodoAVL'] = None
-        self.derecho: Optional['NodoAVL'] = None
-
-    def __repr__(self) -> str:
+    def __repr__(self):
         return f"NodoAVL(clave='{self.clave}', valor={self.valor}, altura={self.altura})"
 
 
 class ArbolAVL:
-    """Árbol Binario de Búsqueda Auto-balanceado (AVL)."""
-
     def __init__(self):
-        self.raiz: Optional[NodoAVL] = None
+        self.raiz = None
 
-    # --- CÁLCULO DE ALTURA Y FACTOR DE BALANCE ---
-    def _altura(self, nodo: Optional[NodoAVL]) -> int:
-        """Devuelve la altura de un nodo o 0 si es None."""
+    def _altura(self, nodo):
+        # devuelve la altura del nodo o 0 si es None
         return nodo.altura if nodo else 0
 
-    def obtener_altura(self) -> int:
-        """Devuelve la altura total del árbol AVL (altura de la raíz)."""
+    def obtener_altura(self):
+        # devuelve la altura total del arbol avl
         return self._altura(self.raiz)
 
-    def _factor_balance(self, nodo: Optional[NodoAVL]) -> int:
-        """
-        Calcula el factor de balance de un nodo:
-        balance = altura(izq) - altura(der)
-        """
+    def _factor_balance(self, nodo):
+        # balance = altura(izq) - altura(der)
         if nodo is None:
             return 0
         return self._altura(nodo.izquierdo) - self._altura(nodo.derecho)
 
-    def obtener_balance(self, nodo: Optional[NodoAVL] = None) -> int:
-        """
-        Devuelve el factor de balance del nodo dado, o de la raíz si no se especifica.
-        """
+    def obtener_balance(self, nodo=None):
+        # devuelve el balance del nodo o de la raiz si no se pasa ninguno
         nodo_a_evaluar = nodo if nodo is not None else self.raiz
         return self._factor_balance(nodo_a_evaluar)
 
-    # --- ROTACIONES ---
-    def _rotacion_derecha(self, y: NodoAVL) -> NodoAVL:
-        r"""
-        Rotación simple a la derecha.
-             y                x
-            / \              / \
-           x   T3    ==>    T1  y
-          / \                  / \
-         T1  T2               T2  T3
-        """
+    def _rotacion_derecha(self, y):
+        # rotacion simple a la derecha
         x = y.izquierdo
         if x is None:
             return y
         t2 = x.derecho
 
-        # Realizar rotación
+        # hacemos la rotacion
         x.derecho = y
         y.izquierdo = t2
 
-        # Actualizar alturas (primero el hijo y, luego la nueva raíz x)
+        # recalculamos alturas
         y.altura = 1 + max(self._altura(y.izquierdo), self._altura(y.derecho))
         x.altura = 1 + max(self._altura(x.izquierdo), self._altura(x.derecho))
 
         return x
 
-    def _rotacion_izquierda(self, x: NodoAVL) -> NodoAVL:
-        r"""
-        Rotación simple a la izquierda.
-           x                   y
-          / \                 / \
-         T1  y       ==>     x   T3
-            / \             / \
-           T2  T3          T1  T2
-        """
+    def _rotacion_izquierda(self, x):
+        # rotacion simple a la izquierda
         y = x.derecho
         if y is None:
             return x
         t2 = y.izquierdo
 
-        # Realizar rotación
+        # hacemos la rotacion
         y.izquierdo = x
         x.derecho = t2
 
-        # Actualizar alturas (primero el hijo x, luego la nueva raíz y)
+        # recalculamos alturas
         x.altura = 1 + max(self._altura(x.izquierdo), self._altura(x.derecho))
         y.altura = 1 + max(self._altura(y.izquierdo), self._altura(y.derecho))
 
         return y
 
-    def _rotacion_doble_izq_der(self, nodo: NodoAVL) -> NodoAVL:
-        """
-        Rotación doble Izquierda-Derecha (LR).
-        Primero rotación simple a la izquierda sobre el hijo izquierdo,
-        seguido de rotación simple a la derecha sobre el nodo actual.
-        """
+    def _rotacion_doble_izq_der(self, nodo):
+        # rotacion doble izquierda-derecha (LR)
         if nodo.izquierdo is not None:
             nodo.izquierdo = self._rotacion_izquierda(nodo.izquierdo)
         return self._rotacion_derecha(nodo)
 
-    def _rotacion_doble_der_izq(self, nodo: NodoAVL) -> NodoAVL:
-        """
-        Rotación doble Derecha-Izquierda (RL).
-        Primero rotación simple a la derecha sobre el hijo derecho,
-        seguido de rotación simple a la izquierda sobre el nodo actual.
-        """
+    def _rotacion_doble_der_izq(self, nodo):
+        # rotacion doble derecha-izquierda (RL)
         if nodo.derecho is not None:
             nodo.derecho = self._rotacion_derecha(nodo.derecho)
         return self._rotacion_izquierda(nodo)
 
-    # --- INSERCIÓN ---
-    def insertar(self, clave: str, valor: Any) -> None:
-        """Inserta un par clave-valor en el árbol AVL manteniendo el balance."""
+    def insertar(self, clave, valor):
+        # inserta manteniendo el balance avl
         clave_norm = clave.strip().lower()
         self.raiz = self._insertar_recursivo(self.raiz, clave_norm, valor)
 
-    def _insertar_recursivo(self, nodo: Optional[NodoAVL], clave: str, valor: Any) -> NodoAVL:
-        # 1. Inserción normal de BST
+    def _insertar_recursivo(self, nodo, clave, valor):
+        # 1. insercion normal como bst
         if nodo is None:
             return NodoAVL(clave, valor)
 
@@ -131,41 +96,40 @@ class ArbolAVL:
         elif clave > nodo.clave:
             nodo.derecho = self._insertar_recursivo(nodo.derecho, clave, valor)
         else:
-            # Actualizar valor si la clave ya existe
+            # si la clave ya existe actualizamos el valor
             nodo.valor = valor
             return nodo
 
-        # 2. Actualizar la altura del nodo actual
+        # 2. actualizamos la altura del nodo actual
         nodo.altura = 1 + max(self._altura(nodo.izquierdo), self._altura(nodo.derecho))
 
-        # 3. Obtener el factor de balance
+        # 3. calculamos el balance
         balance = self._factor_balance(nodo)
 
-        # 4. Aplicar rotaciones si el nodo se desbalanceó
-        # Caso 1: Desbalance Izquierda-Izquierda (LL)
+        # 4. aplicamos rotaciones si quedo desbalanceado
+        # caso 1: izquierda izquierda (LL)
         if balance > 1 and self._factor_balance(nodo.izquierdo) >= 0:
             return self._rotacion_derecha(nodo)
 
-        # Caso 2: Desbalance Izquierda-Derecha (LR)
+        # caso 2: izquierda derecha (LR)
         if balance > 1 and self._factor_balance(nodo.izquierdo) < 0:
             return self._rotacion_doble_izq_der(nodo)
 
-        # Caso 3: Desbalance Derecha-Derecha (RR)
+        # caso 3: derecha derecha (RR)
         if balance < -1 and self._factor_balance(nodo.derecho) <= 0:
             return self._rotacion_izquierda(nodo)
 
-        # Caso 4: Desbalance Derecha-Izquierda (RL)
+        # caso 4: derecha izquierda (RL)
         if balance < -1 and self._factor_balance(nodo.derecho) > 0:
             return self._rotacion_doble_der_izq(nodo)
 
         return nodo
 
-    # --- BÚSQUEDA ---
-    def buscar(self, clave: str) -> Optional[Any]:
-        """Busca un elemento en el árbol AVL dada su clave exacta."""
+    def buscar(self, clave):
+        # busca un elemento por su clave exacta
         return self._buscar_recursivo(self.raiz, clave.strip().lower())
 
-    def _buscar_recursivo(self, nodo: Optional[NodoAVL], clave: str) -> Optional[Any]:
+    def _buscar_recursivo(self, nodo, clave):
         if nodo is None:
             return None
 
@@ -176,49 +140,47 @@ class ArbolAVL:
         else:
             return self._buscar_recursivo(nodo.derecho, clave)
 
-    # --- RECORRIDOS ---
-    def inorder(self) -> List[Any]:
-        """Recorrido Inorden (Izquierda, Raíz, Derecha). Devuelve la lista ordenada por clave."""
-        resultados: List[Any] = []
+    def inorder(self):
+        # recorrido inorden: izquierda, raiz, derecha
+        resultados = []
         self._inorder_recursivo(self.raiz, resultados)
         return resultados
 
-    def _inorder_recursivo(self, nodo: Optional[NodoAVL], lista: List[Any]) -> None:
+    def _inorder_recursivo(self, nodo, lista):
         if nodo:
             self._inorder_recursivo(nodo.izquierdo, lista)
             lista.append(nodo.valor)
             self._inorder_recursivo(nodo.derecho, lista)
 
-    def preorder(self) -> List[Any]:
-        """Recorrido Preorden (Raíz, Izquierda, Derecha)."""
-        resultados: List[Any] = []
+    def preorder(self):
+        # recorrido preorden: raiz, izquierda, derecha
+        resultados = []
         self._preorder_recursivo(self.raiz, resultados)
         return resultados
 
-    def _preorder_recursivo(self, nodo: Optional[NodoAVL], lista: List[Any]) -> None:
+    def _preorder_recursivo(self, nodo, lista):
         if nodo:
             lista.append(nodo.valor)
             self._preorder_recursivo(nodo.izquierdo, lista)
             self._preorder_recursivo(nodo.derecho, lista)
 
-    def postorder(self) -> List[Any]:
-        """Recorrido Postorden (Izquierda, Derecha, Raíz)."""
-        resultados: List[Any] = []
+    def postorder(self):
+        # recorrido postorden: izquierda, derecha, raiz
+        resultados = []
         self._postorder_recursivo(self.raiz, resultados)
         return resultados
 
-    def _postorder_recursivo(self, nodo: Optional[NodoAVL], lista: List[Any]) -> None:
+    def _postorder_recursivo(self, nodo, lista):
         if nodo:
             self._postorder_recursivo(nodo.izquierdo, lista)
             self._postorder_recursivo(nodo.derecho, lista)
             lista.append(nodo.valor)
 
-    # --- VALIDACIÓN DE BALANCE ---
-    def esta_balanceado(self) -> bool:
-        """Verifica si todos los nodos cumplen la propiedad AVL (-1 <= balance <= 1)."""
+    def esta_balanceado(self):
+        # revisa si el arbol cumple la condicion de avl en todos sus nodos
         return self._esta_balanceado_recursivo(self.raiz)[0]
 
-    def _esta_balanceado_recursivo(self, nodo: Optional[NodoAVL]) -> tuple[bool, int]:
+    def _esta_balanceado_recursivo(self, nodo):
         if nodo is None:
             return True, 0
 
