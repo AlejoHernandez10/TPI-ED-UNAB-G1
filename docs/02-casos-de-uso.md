@@ -4,6 +4,33 @@ En este documento explicamos como una persona interactua con la aplicacion paso 
 
 ---
 
+## 1. Diagrama General de Casos de Uso
+
+```mermaid
+flowchart LR
+    Usuario((Usuario))
+
+    subgraph Sistema [Aplicacion NextGame]
+        CU1([CU1: Buscar Videojuego])
+        CU2([CU2: Explorar Categorias])
+        CU3([CU3: Ver Juegos Relacionados])
+        CU4([CU4: Obtener Recomendaciones])
+        CU5([CU5: Ver Top 10])
+        CU6([CU6: Encontrar Camino Entre Juegos])
+    end
+
+    Usuario --> CU1
+    Usuario --> CU2
+    Usuario --> CU3
+    Usuario --> CU4
+    Usuario --> CU5
+    Usuario --> CU6
+```
+
+---
+
+## 2. Descripcion Detallada de Casos de Uso
+
 ### Caso de Uso 1: Buscar un videojuego por titulo
 
 * **Actor:** Usuario
@@ -12,7 +39,7 @@ En este documento explicamos como una persona interactua con la aplicacion paso 
   1. El usuario elige la opcion `1. Buscar videojuego (Arbol AVL)` en el menu principal.
   2. El sistema le pide que escriba el titulo del juego.
   3. El usuario escribe el nombre (por ejemplo: "Witcher") y presiona ENTER.
-  4. El sistema busca en el Arbol AVL y muestra en pantalla la informacion completa del juego (titulo, año, generos, desarrollador y calificacion).
+  4. El sistema busca en el Arbol AVL y muestra en pantalla la informacion completa del juego (titulo, anio, generos, desarrollador y calificacion).
   5. El usuario presiona ENTER y vuelve al menu principal.
 * **Flujo Alternativo:**
   * Si el juego no existe en el catalogo, el sistema muestra el mensaje: `No se encontraron videojuegos` y le permite volver al menu.
@@ -74,3 +101,19 @@ En este documento explicamos como una persona interactua con la aplicacion paso 
   2. El sistema extrae del Heap los 10 videojuegos con mayor puntaje sin tener que ordenar todo el catalogo.
   3. Muestra una tabla numerada del 1 al 10 con el titulo y la nota de cada juego.
   4. El usuario revisa la lista y presiona ENTER para regresar al menu principal.
+
+---
+
+### Caso de Uso 6: Encontrar camino entre dos juegos (Dijkstra)
+
+* **Actor:** Usuario
+* **Precondicion:** El grafo y el catalogo estan cargados.
+* **Flujo Principal:**
+  1. El usuario selecciona la opcion `7. Encontrar camino entre juegos (Dijkstra)`.
+  2. El sistema le solicita el juego de inicio (por ejemplo: "The Witcher 3").
+  3. El sistema le solicita el juego de destino (por ejemplo: "Portal 2").
+  4. El sistema ejecuta el algoritmo de Dijkstra y calcula la secuencia de transicion con menor costo acumulado.
+  5. Muestra en pantalla la lista de juegos intermedios y el costo total de transicion.
+  6. El usuario presiona ENTER para volver al menu principal.
+* **Flujo Alternativo:**
+  * Si alguno de los dos juegos no existe en el catalogo, el sistema avisa `No se encontro alguno de los juegos ingresados` y vuelve al menu.

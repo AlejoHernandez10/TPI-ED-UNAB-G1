@@ -1,7 +1,7 @@
-from typing import List
+# modelos/juego.py
 
 class Juego:
-    def __init__(self, id_juego: int, titulo: str, generos: List[str], desarrollador: str, calificacion: float, anio_publicacion: int, web: str = ""):
+    def __init__(self, id_juego, titulo, generos, desarrollador, calificacion, anio_publicacion, web=""):
         self._id = id_juego
         self._titulo = titulo
         self._generos = generos
@@ -11,43 +11,43 @@ class Juego:
         self._web = web
 
     @property
-    def id(self) -> int:
+    def id(self):
         return self._id
 
     @property
-    def titulo(self) -> str:
+    def titulo(self):
         return self._titulo
 
     @property
-    def generos(self) -> List[str]:
+    def generos(self):
         return self._generos
 
     @property
-    def desarrollador(self) -> str:
+    def desarrollador(self):
         return self._desarrollador
 
     @property
-    def calificacion(self) -> float:
+    def calificacion(self):
         return self._calificacion
 
     @property
-    def anio_publicacion(self) -> int:
+    def anio_publicacion(self):
         return self._anio_publicacion
 
     @property
-    def web(self) -> str:
+    def web(self):
         return self._web
 
-    def tiene_genero(self, genero_buscado: str) -> bool:
+    def tiene_genero(self, genero_buscado):
         genero_limpio = genero_buscado.strip().lower()
         return any(g.lower() == genero_limpio for g in self._generos)
 
-    def generos_en_comun(self, otro_juego: 'Juego') -> int:
-        """Devuelve la cantidad de géneros/tags que comparte con otro juego."""
+    def generos_en_comun(self, otro_juego):
+        # devuelve la cantidad de generos que comparte con otro juego
         mis_generos = {g.lower() for g in self._generos}
         otros_generos = {g.lower() for g in otro_juego.generos}
         return len(mis_generos.intersection(otros_generos))
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         generos_str = ", ".join(self._generos)
-        return f"{self._titulo} ({self._anio_publicacion}) - [{generos_str}] | ⭐ {self._calificacion}"
+        return f"{self._titulo} ({self._anio_publicacion}) - [{generos_str}] | Rating: {self._calificacion}"

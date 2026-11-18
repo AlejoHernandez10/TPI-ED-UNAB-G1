@@ -1,17 +1,17 @@
-# 🎮 NextGame — Catalogo y Sistema de Recomendacion de Videojuegos
+# NextGame — Catalogo y Sistema de Recomendacion de Videojuegos
 
 **NextGame** es una aplicacion por consola desarrollada en Python para la materia **Estructuras de Datos (UNaB - 2026)**. Permite cargar un catalogo de mas de 200 videojuegos, buscar titulos a alta velocidad, navegar categorias jerarquicas, consultar rankings de mejores puntuados y descubrir juegos relacionados a traves de una red de conexiones.
 
 ---
 
-##  Integrantes del Equipo (Grupo 1 - Comision 3)
+## Integrantes del Equipo (Grupo 1 - Comision 3)
 * **Hernandez Alejo**  
 * **Mora Joaquin**  
 * **Docente:** Angel Leonardo Bianco
 
 ---
 
-##  Estructuras de Datos Implementadas
+## Estructuras de Datos Implementadas
 
 Todas las estructuras principales fueron programadas manualmente por el equipo sin usar librerias externas que resuelvan la logica:
 
@@ -25,46 +25,49 @@ Todas las estructuras principales fueron programadas manualmente por el equipo s
 
 ---
 
-##  Documentacion del Proyecto
+## Documentacion del Proyecto
 
 Los documentos formales requeridos por la catedra se encuentran en la carpeta `docs/`:
 
-*  [01-requerimientos.md](docs/01-requerimientos.md) — Requerimientos funcionales, no funcionales y alcance.
-*  [02-casos-de-uso.md](docs/02-casos-de-uso.md) — Descripcion de los 5 casos de uso principales.
-*  [03-diagrama-clases.md](docs/03-diagrama-clases.md) — Diagrama de clases UML del sistema y estructuras.
-*  [04-diagrama-datos.md](docs/04-diagrama-datos.md) — Diagrama de flujo de datos y conexion de estructuras.
-*  [05-gestion-proyecto.md](docs/05-gestion-proyecto.md) — Metodologia de trabajo, equipo y tablero de tareas.
-*  [justificacion-recorridos.md](docs/justificacion-recorridos.md) — Analisis de BFS y DFS y por que se implementan como metodos genericos.
-*  [justificacion-dijkstra.md](docs/justificacion-dijkstra.md) — Explicacion de Dijkstra, definicion de costo y justificacion teorica.
+* [01-requerimientos.md](docs/01-requerimientos.md) — Requerimientos funcionales, no funcionales y alcance.
+* [02-casos-de-uso.md](docs/02-casos-de-uso.md) — Descripcion de casos de uso principales.
+* [03-diagrama-clases.md](docs/03-diagrama-clases.md) — Diagrama de clases UML del sistema y estructuras.
+* [04-diagrama-datos.md](docs/04-diagrama-datos.md) — Diagrama de flujo de datos y conexion de estructuras.
+* [05-gestion-proyecto.md](docs/05-gestion-proyecto.md) — Metodologia de trabajo, equipo y tablero de tareas.
+* [06-analisis-complejidad.md](docs/06-analisis-complejidad.md) — Analisis teorico y mediciones reales de complejidad temporal (TP 2).
+* [justificacion-recorridos.md](docs/justificacion-recorridos.md) — Analisis de BFS y DFS y por que se implementan como metodos genericos.
+* [justificacion-dijkstra.md](docs/justificacion-dijkstra.md) — Explicacion de Dijkstra, definicion de costo y justificacion teorica.
+* [guion-demostracion.md](docs/guion-demostracion.md) — Guion paso a paso de 3 minutos para la defensa oral (TP 10).
 
 ---
 
-## 🚀 Instalacion y Ejecucion
+## Instalacion y Ejecucion
 
 ### Requisitos
- [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-
-
+[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 
 ### 1. Ejecutar el sistema completo
 ```bash
-py main.py
+python main.py
 ```
 
 ### 2. Ejecutar las pruebas individuales de cada etapa
 ```bash
+# Medicion de tiempos y comparativa O(n) vs O(log n) (TP 2)
+python algoritmos/medicion_tiempos.py
+
 # Probar Arbol Binario (TP 3)
-py algoritmos/probar_bst.py
+python algoritmos/probar_bst.py
 
 # Probar AVL y comparativa con BST degenerado (TP 4 y TP 5)
-py algoritmos/probar_avl.py
+python algoritmos/probar_avl.py
 
 # Probar Max-Heap de calificaciones (TP 6)
-py algoritmos/probar_heap.py
+python algoritmos/probar_heap.py
 
 # Probar Grafo de relaciones (TP 7)
-py algoritmos/probar_grafo.py
+python algoritmos/probar_grafo.py
 
 # Probar Caminos Minimos con Dijkstra (TP 9)
-py algoritmos/probar_dijkstra.py
+python algoritmos/probar_dijkstra.py
 ```

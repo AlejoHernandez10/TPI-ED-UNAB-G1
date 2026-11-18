@@ -1,5 +1,4 @@
 import os
-from typing import List, Optional
 from modelos.juego import Juego
 from estructuras.arbol_general import ArbolGeneral
 
@@ -15,7 +14,7 @@ class InterfazConsola:
         input("\nPresione ENTER para continuar...")
 
     @staticmethod
-    def mostrar_menu_principal() -> str:
+    def mostrar_menu_principal():
         InterfazConsola.limpiar_pantalla()
         print("========================================")
         print("              NEXTGAME")
@@ -31,14 +30,14 @@ class InterfazConsola:
         print("----------------------------------------")
         return input("Seleccione una opcion: ").strip()
 
-    # --- Métodos de Entrada ---
+    # metodos de entrada
     @staticmethod
-    def pedir_texto(mensaje: str) -> str:
+    def pedir_texto(mensaje):
         return input(f"\n{mensaje}: ").strip()
 
     @staticmethod
-    def seleccionar_genero(generos: List[str]) -> str:
-        """Muestra los géneros numerados y permite seleccionar por número o texto."""
+    def seleccionar_genero(generos):
+        # muestra los generos numerados y permite seleccionar por numero o texto
         print("\nGeneros disponibles:")
         for idx, g in enumerate(generos, 1):
             print(f"  {idx:2d}. {g}")
@@ -52,9 +51,9 @@ class InterfazConsola:
 
         return entrada
 
-    # --- Métodos de Salida / Visualización ---
+    # metodos de salida
     @staticmethod
-    def mostrar_lista_juegos(titulo_seccion: str, juegos: List[Juego]):
+    def mostrar_lista_juegos(titulo_seccion, juegos):
         print(f"\n{titulo_seccion} ({len(juegos)}):")
         if not juegos:
             print("  [!] No se encontraron videojuegos.")
@@ -64,7 +63,7 @@ class InterfazConsola:
             print(f" * {j.titulo} ({j.anio_publicacion}) - [{', '.join(j.generos)}] | Rating: {j.calificacion}")
 
     @staticmethod
-    def mostrar_tarjeta_recomendaciones(juego_base: Juego, recomendaciones: List[Juego]):
+    def mostrar_tarjeta_recomendaciones(juego_base, recomendaciones):
         titulo_base = juego_base.titulo.upper()
 
         print("\n=======================================================")
@@ -79,7 +78,7 @@ class InterfazConsola:
         print("=======================================================")
 
     @staticmethod
-    def mostrar_top_10(juegos: List[Juego]):
+    def mostrar_top_10(juegos):
         print("\n========================================")
         print("           TOP 10 VIDEOJUEGOS")
         print("----------------------------------------")
@@ -103,12 +102,12 @@ class InterfazConsola:
         print("=======================================================")
 
     @staticmethod
-    def mostrar_mensaje(mensaje: str):
+    def mostrar_mensaje(mensaje):
         print(f"\n{mensaje}")
 
-    # --- Visualización y Recorridos de Árbol General ---
+    # arbol general
     @staticmethod
-    def mostrar_menu_categorias() -> str:
+    def mostrar_menu_categorias():
         print("\n=======================================================")
         print("      EXPLORADOR DE CATEGORIAS (ARBOL GENERAL)")
         print("=======================================================")
@@ -121,7 +120,7 @@ class InterfazConsola:
         return input("Seleccione una opcion: ").strip()
 
     @staticmethod
-    def mostrar_jerarquia_arbol(arbol: ArbolGeneral):
+    def mostrar_jerarquia_arbol(arbol):
         print("\n=======================================================")
         print(" JERARQUIA COMPLETA DEL CATALOGO (ARBOL GENERAL)")
         print("=======================================================\n")
@@ -131,7 +130,7 @@ class InterfazConsola:
         print("=======================================================")
 
     @staticmethod
-    def mostrar_recorrido_bfs(arbol: ArbolGeneral):
+    def mostrar_recorrido_bfs(arbol):
         nodos = arbol.recorrido_amplitud()
         print("\n=======================================================")
         print(" RECORRIDO EN AMPLITUD (BFS - POR NIVELES)")
@@ -143,7 +142,7 @@ class InterfazConsola:
         print("=======================================================")
 
     @staticmethod
-    def mostrar_recorrido_dfs(arbol: ArbolGeneral):
+    def mostrar_recorrido_dfs(arbol):
         nodos = arbol.recorrido_profundidad()
         print("\n=======================================================")
         print(" RECORRIDO EN PROFUNDIDAD (DFS - PREORDEN)")
@@ -155,7 +154,7 @@ class InterfazConsola:
         print("=======================================================")
 
     @staticmethod
-    def mostrar_subarbol_categoria(arbol: ArbolGeneral, categoria: str):
+    def mostrar_subarbol_categoria(arbol, categoria):
         nodo = arbol.buscar(categoria)
         if nodo is None:
             print(f"\n[!] La categoria '{categoria}' no existe en el arbol.")

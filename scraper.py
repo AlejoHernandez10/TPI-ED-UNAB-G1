@@ -29,10 +29,10 @@ import requests
 API_KEY = os.environ.get("RAWG_API_KEY", "PONE TU CLAVE ACA")
 BASE_URL = "https://api.rawg.io/api"
 TOTAL_JUEGOS = 200
-PAGE_SIZE = 40  # máximo que permite RAWG por página
+PAGE_SIZE = 40  # maximo que permite RAWG por pagina
 PAUSA_SEGUNDOS = 0.3  # para no saturar la API
 
-# Traducción opcional de géneros al español
+# traduccion de generos al espanol
 GENEROS_ES = {
     "Action": "Acción",
     "Adventure": "Aventura",
@@ -56,8 +56,8 @@ GENEROS_ES = {
 }
 
 
-def obtener_lista_juegos(cantidad: int) -> list[dict]:
-    """Trae la lista básica de juegos (ordenados por popularidad)."""
+def obtener_lista_juegos(cantidad):
+    # trae la lista basica de juegos (ordenados por popularidad)
     juegos = []
     pagina = 1
     while len(juegos) < cantidad:
@@ -67,7 +67,7 @@ def obtener_lista_juegos(cantidad: int) -> list[dict]:
                 "key": API_KEY,
                 "page": pagina,
                 "page_size": PAGE_SIZE,
-                "ordering": "-added",  # los más populares primero
+                "ordering": "-added",  # los mas populares primero
             },
             timeout=30,
         )
@@ -81,8 +81,8 @@ def obtener_lista_juegos(cantidad: int) -> list[dict]:
     return juegos[:cantidad]
 
 
-def obtener_detalle(juego_id: int) -> dict:
-    """El endpoint de detalle trae desarrollador y sitio web (la lista no los incluye)."""
+def obtener_detalle(juego_id):
+    # el endpoint de detalle trae desarrollador y sitio web
     resp = requests.get(
         f"{BASE_URL}/games/{juego_id}",
         params={"key": API_KEY},
@@ -92,14 +92,14 @@ def obtener_detalle(juego_id: int) -> dict:
     return resp.json()
 
 
-def transformar(idx: int, basico: dict, detalle: dict) -> dict:
+def transformar(idx, basico, detalle):
     generos = [
         GENEROS_ES.get(g["name"], g["name"]) for g in basico.get("genres", [])
     ]
     desarrolladores = detalle.get("developers", [])
     desarrollador = desarrolladores[0]["name"] if desarrolladores else "Desconocido"
 
-    # RAWG califica de 0 a 5 -> lo pasamos a escala de 0 a 10
+    # RAWG califica de 0 a 5, lo pasamos a escala de 0 a 10
     rating = basico.get("rating") or 0
     calificacion = round(rating * 2, 1)
 

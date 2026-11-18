@@ -47,7 +47,7 @@ La implementacion en `estructuras/grafo.py` es super directa y facil de explicar
 
 ---
 
-## 4. Justificacion teorica (Preguntas de examen)
+## 4. Comparativa y justificacion tecnica
 
 * **¿Por que Dijkstra y no Bellman-Ford?**  
   Bellman-Ford es un algoritmo mas pesado y lento que solo se justifica si hubiera aristas con pesos o costos negativos. En NextGame todos los costos son positivos ($costo \ge 1$), por lo que Dijkstra es la opcion correcta, optima y mucho mas rapida.

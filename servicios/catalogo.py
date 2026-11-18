@@ -1,5 +1,4 @@
 import json
-from typing import List, Set, Optional
 from modelos.juego import Juego
 from estructuras.arbol_binario import ArbolBinarioBusqueda
 from estructuras.avl import ArbolAVL
@@ -7,43 +6,40 @@ from estructuras.arbol_general import ArbolGeneral
 from estructuras.heap import MaxHeap
 from estructuras.grafo import Grafo
 
+# Catalogo de videojuegos de NextGame
+# Integra BST, AVL, Arbol General, Max-Heap y Grafo
 
 class CatalogoJuegos:
-    """
-    Catalogo de videojuegos de NextGame.
-    Integra BST, AVL, Arbol General, Max-Heap y Grafo.
-    """
-
     def __init__(self):
-        self._juegos: List[Juego] = []
-        self._bst: ArbolBinarioBusqueda = ArbolBinarioBusqueda()
-        self._avl: ArbolAVL = ArbolAVL()
-        self._arbol_categorias: ArbolGeneral = ArbolGeneral()
-        self._heap: MaxHeap = MaxHeap()
-        self._grafo: Grafo = Grafo()
+        self._juegos = []
+        self._bst = ArbolBinarioBusqueda()
+        self._avl = ArbolAVL()
+        self._arbol_categorias = ArbolGeneral()
+        self._heap = MaxHeap()
+        self._grafo = Grafo()
 
     @property
-    def avl(self) -> ArbolAVL:
+    def avl(self):
         return self._avl
 
     @property
-    def bst(self) -> ArbolBinarioBusqueda:
+    def bst(self):
         return self._bst
 
     @property
-    def arbol_categorias(self) -> ArbolGeneral:
+    def arbol_categorias(self):
         return self._arbol_categorias
 
     @property
-    def heap(self) -> MaxHeap:
+    def heap(self):
         return self._heap
 
     @property
-    def grafo(self) -> Grafo:
+    def grafo(self):
         return self._grafo
 
-    def cargar_desde_json(self, ruta_archivo: str) -> None:
-        """Carga los videojuegos desde un JSON y los indexa en todas las estructuras."""
+    def cargar_desde_json(self, ruta_archivo):
+        # carga los videojuegos desde un JSON y los indexa en todas las estructuras
         try:
             with open(ruta_archivo, 'r', encoding='utf-8') as file:
                 datos = json.load(file)
@@ -55,7 +51,7 @@ class CatalogoJuegos:
                 self._heap = MaxHeap()
                 self._grafo = Grafo()
 
-                generos_creados: Set[str] = set()
+                generos_creados = set()
 
                 for item in datos:
                     juego = Juego(
@@ -106,18 +102,18 @@ class CatalogoJuegos:
                             self._grafo.agregar_arista(j1, j2, peso=comunes)
 
             print(f"[OK] Se cargaron {len(self._juegos)} videojuegos.")
-            print(f"     * Árbol AVL: altura {self._avl.obtener_altura()}, balance {self._avl.obtener_balance()}")
-            print(f"     * Árbol General: {self._arbol_categorias.cantidad_nodos()} nodos, {len(generos_creados)} categorías")
+            print(f"     * Arbol AVL: altura {self._avl.obtener_altura()}, balance {self._avl.obtener_balance()}")
+            print(f"     * Arbol General: {self._arbol_categorias.cantidad_nodos()} nodos, {len(generos_creados)} categorias")
             print(f"     * Max-Heap (TP6): {len(self._heap)} juegos cargados")
-            print(f"     * Grafo (TP7): {self._grafo.cantidad_vertices()} vértices, {self._grafo.cantidad_aristas()} conexiones")
+            print(f"     * Grafo (TP7): {self._grafo.cantidad_vertices()} vertices, {self._grafo.cantidad_aristas()} conexiones")
         except FileNotFoundError:
             print(f"[ERROR] No se encontró el archivo '{ruta_archivo}'.")
         except json.JSONDecodeError:
             print(f"[ERROR] El archivo '{ruta_archivo}' no es un JSON válido.")
 
     # --- BUSQUEDA CON AVL ---
-    def buscar_por_titulo(self, titulo: str) -> List[Juego]:
-        """Busca videojuegos usando el Arbol AVL."""
+    def buscar_por_titulo(self, titulo):
+        # busca videojuegos usando el arbol avl
         resultado = self._avl.buscar(titulo)
         if resultado:
             return [resultado]
@@ -126,15 +122,15 @@ class CatalogoJuegos:
         return [j for j in self._avl.inorder() if palabra in j.titulo.lower()]
 
     # --- CATEGORIAS CON ARBOL GENERAL ---
-    def obtener_arbol_categorias(self) -> ArbolGeneral:
+    def obtener_arbol_categorias(self):
         return self._arbol_categorias
 
     # --- CONSULTAS Y EXPLORACION ---
-    def obtener_por_genero(self, genero: str) -> List[Juego]:
+    def obtener_por_genero(self, genero):
         return [j for j in self._avl.inorder() if j.tiene_genero(genero)]
 
-    def obtener_todos_los_generos(self) -> List[str]:
-        todos: Set[str] = set()
+    def obtener_todos_los_generos(self):
+        todos = set()
         for j in self._avl.inorder():
             todos.update(j.generos)
         return sorted(list(todos))

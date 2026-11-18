@@ -1,26 +1,22 @@
-import sys
 from servicios.catalogo import CatalogoJuegos
 from interfaz.menu import InterfazConsola
 
 
 def main():
-    if hasattr(sys.stdout, 'reconfigure'):
-        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
     catalogo = CatalogoJuegos()
     catalogo.cargar_desde_json("datos/juegos.json")
 
     while True:
         opcion = InterfazConsola.mostrar_menu_principal()
 
-        # 1. BUSCAR VIDEOJUEGO (Árbol AVL Balanceado)
+        # 1. buscar videojuego (arbol avl)
         if opcion == "1":
             query = InterfazConsola.pedir_texto("Ingrese el título a buscar (Búsqueda AVL)")
             resultados = catalogo.buscar_por_titulo(query)
             InterfazConsola.mostrar_lista_juegos("Resultados de búsqueda [Árbol AVL]", resultados)
             InterfazConsola.pausar()
 
-        # 2. EXPLORAR CATEGORÍAS (Árbol General N-ario)
+        # 2. explorar categorias (arbol general)
         elif opcion == "2":
             arbol_cat = catalogo.obtener_arbol_categorias()
             while True:
@@ -45,7 +41,7 @@ def main():
                     InterfazConsola.mostrar_mensaje("Opción inválida. Intente de nuevo.")
                     InterfazConsola.pausar()
 
-        # 3. EXPLORAR POR GÉNERO
+        # 3. explorar por genero
         elif opcion == "3":
             generos = catalogo.obtener_todos_los_generos()
             genero_sel = InterfazConsola.seleccionar_genero(generos)
@@ -65,7 +61,7 @@ def main():
                 InterfazConsola.mostrar_mensaje("[!] No se encontró el juego especificado.")
             InterfazConsola.pausar()
 
-        # 5. OBTENER RECOMENDACIONES
+        # 5. obtener recomendaciones
         elif opcion == "5":
             query = InterfazConsola.pedir_texto("¿Qué juego te gustó?")
             coincidencias = catalogo.buscar_por_titulo(query)
