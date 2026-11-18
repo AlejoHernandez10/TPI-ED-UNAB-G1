@@ -9,7 +9,7 @@ from modelos.juego import Juego
 
 def probar_grafo():
     print("==========================================")
-    print("        PRUEBA DE GRAFOS (TP 7)           ")
+    print("        PRUEBA DE GRAFOS (TP 7 Y 8)       ")
     print("==========================================\n")
 
     grafo = Grafo()
@@ -51,7 +51,15 @@ def probar_grafo():
     else:
         print(f"   Tiene {len(vecinos_fifa)} conexiones.")
 
-    print("\n[OK] Grafo implementado con lista de adyacencia funcionando correctamente.")
+    # 5. Probando recorridos genericos (TP 8)
+    print("\n5. Probando recorridos genericos (TP 8):")
+    recorrido_bfs = grafo.bfs(j1.id)
+    print(f"   Recorrido BFS desde '{j1.titulo}' (por niveles): IDs {recorrido_bfs}")
+
+    recorrido_dfs = grafo.dfs(j1.id)
+    print(f"   Recorrido DFS desde '{j1.titulo}' (en profundidad): IDs {recorrido_dfs}")
+
+    print("\n[OK] Grafo y recorridos BFS/DFS funcionando correctamente.")
 
 if __name__ == "__main__":
     probar_grafo()

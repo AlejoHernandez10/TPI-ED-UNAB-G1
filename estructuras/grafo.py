@@ -1,3 +1,5 @@
+from collections import deque
+
 # estructuras/grafo.py
 
 class Grafo:
@@ -42,3 +44,46 @@ class Grafo:
         # sumamos todas las conexiones y dividimos por 2 porque estan duplicadas (ida y vuelta)
         total = sum(len(vecinos) for vecinos in self.vertices.values())
         return total // 2
+
+    # --- RECORRIDOS (TP 8) ---
+
+    def bfs(self, id_origen):
+        # recorrido en anchura usando cola FIFO
+        # explora por niveles de distancia desde el origen
+        if id_origen not in self.vertices:
+            return []
+
+        cola = deque([id_origen])
+        visitados = {id_origen}
+        orden = []
+
+        while cola:
+            actual = cola.popleft()
+            orden.append(actual)
+
+            # revisamos los vecinos
+            for vecino, _ in self.vertices[actual]:
+                # marcamos apenas lo descubrimos para no meterlo dos veces a la cola
+                if vecino.id not in visitados:
+                    visitados.add(vecino.id)
+                    cola.append(vecino.id)
+
+        return orden
+
+    def dfs(self, id_origen, visitados=None):
+        # recorrido en profundidad usando recursion
+        # se mete a fondo por una rama y vuelve atras con backtracking
+        if visitados is None:
+            visitados = set()
+
+        if id_origen not in self.vertices or id_origen in visitados:
+            return []
+
+        visitados.add(id_origen)
+        orden = [id_origen]
+
+        for vecino, _ in self.vertices[id_origen]:
+            if vecino.id not in visitados:
+                orden.extend(self.dfs(vecino.id, visitados))
+
+        return orden
