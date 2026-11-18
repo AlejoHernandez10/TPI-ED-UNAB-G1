@@ -87,3 +87,58 @@ class Grafo:
                 orden.extend(self.dfs(vecino.id, visitados))
 
         return orden
+
+    # --- CAMINO MINIMO (TP 9) ---
+
+    def dijkstra(self, id_origen, id_destino):
+        # si alguno de los dos juegos no esta en el grafo, no hay camino
+        if id_origen not in self.vertices or id_destino not in self.vertices:
+            return None, []
+
+        # arrancamos todas las distancias en infinito, salvo el origen que es 0
+        distancias = {v: float('inf') for v in self.vertices}
+        distancias[id_origen] = 0
+
+        # guardamos el padre de cada nodo para reconstruir la ruta hacia atras
+        padres = {v: None for v in self.vertices}
+
+        # conjunto de nodos pendientes de visitar
+        no_visitados = set(self.vertices.keys())
+
+        while no_visitados:
+            # elegimos el nodo no visitado que tenga la distancia acumulada mas chica
+            actual = min(no_visitados, key=lambda v: distancias[v])
+
+            # si ya no podemos alcanzar mas nodos o llegamos al destino, cortamos
+            if distancias[actual] == float('inf') or actual == id_destino:
+                break
+
+            no_visitados.remove(actual)
+
+            # miramos los vecinos del nodo actual
+            for vecino, generos_comunes in self.vertices[actual]:
+                if vecino.id in no_visitados:
+                    # costo de pasar de un juego al otro:
+                    # mas generos en comun = menor costo de transicion
+                    costo = max(1, 5 - generos_comunes)
+                    nueva_distancia = distancias[actual] + costo
+
+                    # si encontramos un camino mas corto, lo actualizamos
+                    if nueva_distancia < distancias[vecino.id]:
+                        distancias[vecino.id] = nueva_distancia
+                        padres[vecino.id] = actual
+
+        # si nunca pudimos llegar al destino
+        if distancias[id_destino] == float('inf'):
+            return None, []
+
+        # reconstruimos el camino hacia atras siguiendo los padres
+        camino = []
+        paso = id_destino
+        while paso is not None:
+            camino.append(paso)
+            paso = padres[paso]
+
+        # lo damos vuelta para que vaya desde el origen hasta el destino
+        camino.reverse()
+        return distancias[id_destino], camino

@@ -26,6 +26,7 @@ class InterfazConsola:
         print("4. Ver juegos relacionados (Grafo)")
         print("5. Obtener recomendaciones")
         print("6. Ver Top 10 (Max-Heap)")
+        print("7. Encontrar camino entre juegos (Dijkstra)")
         print("0. Salir")
         print("----------------------------------------")
         return input("Seleccione una opcion: ").strip()
@@ -85,6 +86,21 @@ class InterfazConsola:
         for idx, j in enumerate(juegos, 1):
             print(f"{idx:2d}. {j.titulo:<28} Rating: {j.calificacion}")
         print("----------------------------------------")
+
+    @staticmethod
+    def mostrar_camino(camino, distancia):
+        print("\n=======================================================")
+        print("        CAMINO DE AFINIDAD ENCONTRADO (DIJKSTRA)       ")
+        print("=======================================================")
+        print(f"Total de juegos en la secuencia: {len(camino)}")
+        print(f"Costo de transicion acumulado: {distancia}\n")
+
+        for idx, j in enumerate(camino, 1):
+            flecha = "       v" if idx < len(camino) else ""
+            print(f"  {idx}. {j.titulo} ({j.anio_publicacion}) - [{', '.join(j.generos)}]")
+            if flecha:
+                print(flecha)
+        print("=======================================================")
 
     @staticmethod
     def mostrar_mensaje(mensaje: str):

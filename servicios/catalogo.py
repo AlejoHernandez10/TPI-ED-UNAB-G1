@@ -140,20 +140,31 @@ class CatalogoJuegos:
         return sorted(list(todos))
 
     # --- RELACIONADOS Y RECOMENDACIONES CON GRAFOS (TP7) ---
-    def obtener_relacionados(self, juego_base: Juego, limite: int = 5) -> List[Juego]:
-        """Busca en el grafo los vecinos conectados al juego y los ordena por similitud."""
+    def obtener_relacionados(self, juego_base, limite=5):
+        # busca en el grafo los vecinos conectados al juego y los ordena por similitud
         vecinos = self._grafo.obtener_vecinos(juego_base.id)
         # ordenamos primero por cantidad de generos en comun (peso) y despues por nota
         vecinos_ordenados = sorted(vecinos, key=lambda item: (item[1], item[0].calificacion), reverse=True)
         return [juego for juego, _ in vecinos_ordenados[:limite]]
 
-    def obtener_recomendaciones(self, juego_base: Juego, limite: int = 3) -> List[Juego]:
-        """Toma los vecinos del grafo y devuelve los de mejor calificacion."""
+    def obtener_recomendaciones(self, juego_base, limite=3):
+        # toma los vecinos del grafo y devuelve los de mejor calificacion
         relacionados = self.obtener_relacionados(juego_base, limite=limite * 2)
         recomendaciones = sorted(relacionados, key=lambda j: j.calificacion, reverse=True)
         return recomendaciones[:limite]
 
     # --- RANKINGS CON MAX-HEAP (TP6) ---
-    def obtener_top_n(self, n: int = 10) -> List[Juego]:
-        """Devuelve el Top N usando la estructura Max-Heap propia."""
+    def obtener_top_n(self, n=10):
+        # devuelve los mejores n juegos usando nuestro max-heap
         return self._heap.obtener_top_n(n)
+
+    # --- CAMINO MINIMO (TP 9) ---
+    def encontrar_camino(self, juego_origen, juego_destino):
+        # busca el camino de transicion mas cercano entre dos juegos usando dijkstra
+        distancia, camino_ids = self._grafo.dijkstra(juego_origen.id, juego_destino.id)
+        if not camino_ids:
+            return None, []
+
+        juegos_por_id = {j.id: j for j in self._juegos}
+        camino_juegos = [juegos_por_id[id_j] for id_j in camino_ids]
+        return distancia, camino_juegos

@@ -20,6 +20,8 @@ Todas las estructuras principales fueron programadas manualmente por el equipo s
 * **TP 5 — Arbol General (N-ario):** Jerarquia de categorias (Catalogo -> Generos -> Videojuegos) con recorridos en amplitud (BFS) y profundidad (DFS).
 * **TP 6 — Max-Heap:** Cola de prioridad manual basada en una lista que resuelve el Top 10 de mejores calificaciones de manera eficiente en $O(k \log n)$ sin ordenar toda la lista.
 * **TP 7 — Grafo No Dirigido:** Red de videojuegos mediante lista de adyacencia. Las aristas conectan juegos que comparten generos (con peso segun la cantidad de coincidencias) para recomendar titulos parecidos.
+* **TP 8 — Recorridos en Grafos:** Implementacion de BFS (por niveles con cola FIFO) y DFS (en profundidad con recursion) sobre el grafo.
+* **TP 9 — Caminos Minimos (Dijkstra):** Algoritmo de Dijkstra para encontrar el camino de menor costo de transicion y mayor afinidad entre dos videojuegos cualesquiera.
 
 ---
 
@@ -32,6 +34,8 @@ Los documentos formales requeridos por la catedra se encuentran en la carpeta `d
 *  [03-diagrama-clases.md](docs/03-diagrama-clases.md) — Diagrama de clases UML del sistema y estructuras.
 *  [04-diagrama-datos.md](docs/04-diagrama-datos.md) — Diagrama de flujo de datos y conexion de estructuras.
 *  [05-gestion-proyecto.md](docs/05-gestion-proyecto.md) — Metodologia de trabajo, equipo y tablero de tareas.
+*  [justificacion-recorridos.md](docs/justificacion-recorridos.md) — Analisis de BFS y DFS y por que se implementan como metodos genericos.
+*  [justificacion-dijkstra.md](docs/justificacion-dijkstra.md) — Explicacion de Dijkstra, definicion de costo y justificacion teorica.
 
 ---
 
@@ -60,4 +64,7 @@ py algoritmos/probar_heap.py
 
 # Probar Grafo de relaciones (TP 7)
 py algoritmos/probar_grafo.py
+
+# Probar Caminos Minimos con Dijkstra (TP 9)
+py algoritmos/probar_dijkstra.py
 ```
